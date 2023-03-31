@@ -1,0 +1,322 @@
+body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+#root {
+	flex: 1;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+.header {
+	background-color: #000;
+	display: flex;
+	padding: 1.5em 4em;
+	color: #fff;
+}
+.logo {}
+.spacer {
+	flex: 1;
+}
+.nav-item {
+	color: #fff;
+	margin: 0 1em;
+	text-decoration: none;
+}
+.nav-item:hover {
+	text-decoration: solid underline;
+}
+.nav-item:active {
+	color: gray;
+}
+.nav-item.active {
+	color: #adf;
+	pointer-events: none;
+}
+
+
+
+.main-content {
+	flex: 1;
+	overflow-y: auto;
+}
+.chat-container {
+	height: 100%;
+	display: flex;
+}
+
+.chats {
+	flex: 1;
+	min-width: 20em;
+	border-right: solid 1px #ccc;
+}
+.chats-item {
+	padding: 0.8em;
+	margin: 0 0.6em;
+	border-bottom: solid 1px #ccc;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: black;
+}
+.chats-item:hover {
+	background-color: #fbfbfb;
+}
+.chats-item.active {
+	background-color: #f0f7ff;
+	pointer-events: none;
+}
+.chats-dp {
+	height: 3em;
+	width: 3em;
+	border-radius: 2em;
+	background-color: black;
+	margin-right: 1em;
+	min-width: 3em;
+}
+.chats-content {
+	flex: 1;
+	min-width: 0;
+}
+.chats-subtitle {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #0008;
+	font-size: 0.9em;
+}
+.chats-subtitle > .msg-status {
+	display: inline-block;
+}
+.chats-title {
+	font-family: sans-serif;
+	color: #000;
+	font-size: 1.3em;
+}
+.chat {
+	flex: 2.5;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	background-color: #ece5dd;
+}
+.chat-header {
+	display: flex;
+	padding: 1em 1em;
+	background: #000d;
+	align-items: center;
+}
+.chat-dp {
+	height: 4em;
+	width: 4em;
+	border-radius: 4em;
+	background-color: white;
+	margin-right: 1em;
+}
+
+.chat-title {
+	color: #fff;
+	font-size: 1.5em;
+}
+
+.chat-box {
+	flex: 1;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column-reverse;
+}
+.msg-outer {
+	padding: 1em;
+	border-radius: 0.5em;
+	max-width: 30vw;
+	margin: 0.1em 1em;
+	display: flex;
+	flex-direction: column;
+}
+.msg-sent {
+	background-color: #dcf8c6;
+	align-self: flex-end;
+	align-items: flex-end;
+	text-align: right;
+}
+.msg-received {
+	background-color: #fffffe;
+	align-self: flex-start;
+	text-align: left;
+	align-items: flex-start;
+}
+.msg-text {
+}
+.msg-info {
+	color: #777;
+	font-size: 0.7em;
+	align-self: flex-end;
+	display: flex;
+	margin: 0 -1em -1em 0;
+}
+.msg-time {}
+.msg-status {}
+.chat-footer {
+	display: flex;
+	align-items: flex-start;
+	padding: 0.5em 1em;
+}
+.chat-footer-area {
+	background-color: white;
+	border-radius: 1em;
+	display: flex;
+	align-items: center;
+	flex: 1;
+	margin-right: 0.5em;
+	box-shadow: 0px 0px 5px #0002;
+}
+.chat-emojibutton {
+	margin: 1em;
+}
+.chat-input {
+	flex: 1;
+	font-family: sans-serif;
+	color: black;
+	margin: 0.8em 1.3em;
+	height: 4.2em;
+	line-height: 1.3em;
+	font-size: 1em;
+	border: none;
+	outline: none;
+	padding: 0 0;
+	resize: none;
+}
+.chat-sendbutton {
+	height: 4.2em;
+	aspect-ratio: 1;
+	background-color: #000d;
+	border: none;
+	border-radius: 3em;
+}
+.chat-sendbutton:hover {
+	background-color: #334e;
+}
+.chat-sendbutton:active {
+	background-color: #557e;
+}
+.chat-sendbutton[disabled] {
+	pointer-events: none;
+	background-color: #aaa;
+}
+.chat-empty {
+	height: 100%;
+	width: 100%;
+	background-color: #f5ffe7;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.chat-empty > h2 {
+	font-size: 3em;
+	line-height: 0em;
+	color: #0005;
+	font-family: fantasy, serif, sans-serif;
+}
+
+
+.scroll-container {
+	min-height: 100vh;
+	width: 100%;
+	background-color: #eee;
+	display: flex;
+	flex-direction: column;
+}
+.job-item-outer {
+	color: black;
+	text-decoration: none;
+	width: 40vw;
+	padding: 1.5em 1.5em;
+	margin: 0.5em 0;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 3px #ddd6;
+	align-self: center;
+}
+.job-item-title {
+	color: black;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.job-item-salary {
+	color: #000a;
+	font-size: 0.9em;
+	margin-top: 0.6em;
+}
+.job-item-description {
+	color: #000;
+	font-size: 1em;
+	white-space: pre-line;
+	line-height: 1.2em;
+	margin-top: 0.9em;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	width: 40vw;
+	align-self: center;
+	background-color: white;
+	padding: 2em;
+	box-shadow: 0 0 5px #0001;
+	border-radius: 5px;
+	min-height: 30vh;
+	justify-content: center;
+}
+.field {
+	color: black;
+	margin: 0 0;
+	font-size: 1.1em;
+}
+.field label {
+	display: block;
+	margin-bottom: 0.2em;
+	color: #000c;
+	font-size: 0.9em;
+}
+.field input, .field textarea {
+	font-size: 1em;
+	width: -webkit-fill-available;
+	line-height: 1.2em;
+	padding: 0.1em;
+	font-family: sans-serif;
+	margin-bottom: 1em;
+}
+
+.field textarea {
+	height: 10em;
+}
+.subtext {
+	text-align: center;
+	margin-top: 1em;
+}
+.form button {
+	border: none;
+	background-color: #000;
+	color: #fff;
+	text-align: center;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 0.8em;
+	border-radius: 5px;
+}
+
+.flex-container {
+	min-height: 100vh;
+	width: 100%;
+	background-color: #eee;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
