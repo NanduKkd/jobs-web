@@ -75,20 +75,20 @@ export default function AddJob() {
 			<div className="form">
 				<div className="field">
 					<label>Job Title</label>
-					<input onChange={e => setTitle(e.target.value)} />
+					<input value={title} onChange={e => setTitle(e.target.value)} />
 				</div>
 				<div className="field">
 					<label>Salary</label>
 					<div style={{display: 'flex'}}>
-						<span style={{fontSize: '1.1em', marginTop: '0.1em'}}>₹</span><input type="number" style={{flex: 1, marginLeft: '0.3em'}} onChange={e => setSalary(e.target.value)} />
+						<span style={{fontSize: '1.1em', marginTop: '0.1em'}}>₹</span><input type="number" style={{flex: 1, marginLeft: '0.3em'}} onChange={e => setSalary(e.target.value)} value={salary} />
 					</div>
 				</div>
 				<div className="field">
 					<label>Job Description</label>
-					<textarea onChange={e => setDescription(e.target.value)}></textarea>
+					<textarea onChange={e => setDescription(e.target.value)} value={description}></textarea>
 				</div>
 				{error?<div className="error-label">{error}</div>:null}
-				<button disabled={loading} onClick={onSubmitClick}>Add Job Post</button>
+				<button disabled={loading} onClick={onSubmitClick}>{params?.jobid?"Update":"Add"} Job Post</button>
 			</div>
 		</div>
 	)

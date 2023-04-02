@@ -12,7 +12,7 @@ export default function JobsRoute() {
 
 	useEffect(() => {
 		setLoading(true)
-		axios.get(profile.recruiter?'/api/jobs/recruiter/'+profile._id:'/api/jobs/').then(res => {
+		axios.get(profile.role==='recruiter'?'/api/jobs/recruiter/'+profile._id:'/api/jobs/').then(res => {
 			setError('')
 			setList(res.data)
 			console.log(res.data)
@@ -22,7 +22,7 @@ export default function JobsRoute() {
 		}).then(() => {
 			setLoading(false)
 		})
-	}, [])
+	}, [profile])
 	return (
 		<div className="scroll-container">
 			{error?(

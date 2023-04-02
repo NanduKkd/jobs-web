@@ -15,7 +15,7 @@ export default function ChatRouter() {
 		if(params.profile && data.status==='loaded') {
 			const thisChat = data.chats.find(i => i._id===params.profile)
 			if(thisChat.status==='loaded') {
-				let _msgs = [];
+				let _msgs = [], alertCount=0;
 				let lastDate = null, thisDate;
 				for(let i of thisChat.messages) {
 					thisDate = new Date(new Date(i.createdAt).getTime()-timeGap)
@@ -23,14 +23,17 @@ export default function ChatRouter() {
 						if(lastDate) _msgs.push({type: 'date', date: showDate(lastDate)})
 						lastDate = thisDate;
 					}
+					if(i.from!==profile._id && !i.seen) {
+						alertCount++;
+					}
 					_msgs.push({type: 'msg', ...i, createdAt: showTime(new Date(new Date(i.createdAt).getTime()-timeGap))})
 				}
-				if(lastDate) _msgs.push({type: 'date', date: showDate(lastDate)})
-				return {...thisChat, messages: _msgs}
+				if(lastDate) _msgs.push({type: 'date', date: showDate(lastDate), alertCount})
+				return {...thisChat, messages: _msgs, alertCount}
 			}
 		}
 		return null;
-	}, [data, params, timeGap])
+	}, [data, params, timeGap, profile])
 	function sendJSON(object) {
 		ws.current.send(JSON.stringify(object))
 	}
@@ -86,13 +89,14 @@ export default function ChatRouter() {
 						chats: res.data.map(i => ({
 							_id: i._id,
 							name: i.otherPerson?.name,
+							alertCount: i.alertCount,
 							messages: [{
 								_id: i.messageid,
 								text: i.text,
 								createdAt: i.createdAt,
 								seen: i.seenAt?true:false,
 								from: i.from,
-							}]
+							}],
 						}))
 					})
 				} else {
@@ -124,15 +128,18 @@ export default function ChatRouter() {
 							for(let i in d.chats) {
 								const chat = d.chats[i]
 								if(chat._id===params.profile) {
-									d.chats[i] = {...chat, status: 'loaded', messages: res.data}
+									d.chats[i] = {...chat, status: 'loaded', messages: res.data.messages, alertCount: 0}
 									break;
 								}
 							}
 							return d;
 						})
+						sendJSON({type: 'message_seen', chat: params.profile})
 					})
-				} else {
-					console.log(params.profile, data.chats.map(i => i._id))
+				} else if(chatProfile && chatProfile.status==='loaded') {
+					if(chatProfile.messages.find(i => i.from===params.profile && !i.seenAt)) {
+						sendJSON({type: 'message_seen', chat: params.profile})
+					}
 				}
 			}
 		}
@@ -144,27 +151,49 @@ export default function ChatRouter() {
 			for(let i in c.chats) {
 				const chat = c.chats[i]
 				if(chat._id===msg.chat) {
-					c.chats[i] = {...chat, messages: [{text: msg.text, createdAt: msg.createdAt, seen: msg.seenAt?true:false, from: msg.from}, ...chat.messages]}
+					c.chats[i] = {
+						...chat,
+						messages: [
+							{
+								text: msg.text,
+								createdAt: msg.createdAt,
+								seen: msg.seenAt?true:false,
+								from: msg.from
+							},
+							...chat.messages
+						],
+						alertCount: params.profile!==msg.from
+							&& profile._id!==msg.from
+							?chat.alertCount+1
+							:chat.alertCount
+					}
 					break;
 				}
 			}
 			return c;
 		})
 	}
-	function messageSeen(chat) {
+	function messageSeen(seenChat, bySelf=false) {
+		console.log('messageSeen called', seenChat, bySelf)
 		setData(c => {
 			c = {...c, chats: [...c.chats]};
+			console.log('0')
 			for(let i in c.chats) {
+				console.log('1', i)
 				const chat = c.chats[i]
-				if(chat._id===chat) {
-					c.chats[i] = {...chat, messages: [...chat.messages]}
+				if(chat._id===seenChat) {
+					console.log('2')
+					c.chats[i] = {...chat, messages: [...chat.messages], alertCount: bySelf?0:chat.alertCount}
 					for(let j in c.chats[i].messages) {
 						const msg = c.chats[i].messages[j]
+						console.log('3', j)
 						if(msg.seen) break;
-						else {
+						else if(bySelf!==(msg.from===profile._id)) {
+							console.log('4', msg.text)
 							c.chats[i].messages[j] = {...msg, seen: true}
 						}
 					}
+					console.log('5')
 					break;
 				}
 			}
@@ -204,6 +233,7 @@ export default function ChatRouter() {
 								{i.messages[0].text}
 							</div>
 						</div>
+						{i.alertCount?<div className="chats-alert">{i.alertCount}</div>:null}
 					</NavLink>
 				))}
 			</div>
@@ -222,7 +252,7 @@ export default function ChatRouter() {
 									<div className="msg-text">{msg.text}</div>
 									<div className="msg-info">
 										<div className="msg-time">{msg.createdAt}</div>
-										{msg.from===profile._id?<div className="msg-status">{msg.seen?
+										{msg.from===profile._id?<div className="msg-status">{msg.seen || msg.seenAt?
 
 											<svg width="1.4em" height="1.2em" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<g clip-path="url(#clip0_949_23339)">
@@ -250,7 +280,7 @@ export default function ChatRouter() {
 							<div className="chat-footer-area">
 								<textarea className="chat-input" placeholder="Enter a text to send..." onKeyDown={onKeyDown} onChange={e => setMsgInput(e.target.value)} value={msgInput} />
 							</div>
-							<button disabled={socketStatus!=='live'} onClick={sendMessage} className="chat-sendbutton"></button>
+							<button disabled={socketStatus!=='live'} onClick={sendMessage} className="chat-sendbutton">Send</button>
 						</div>
 					</>
 				):(
@@ -269,7 +299,6 @@ function showTime(d)  {
 }
 function showDate(d) {
 	let now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-	console.log(now, today, d)
 	return d.getTime()>today.getTime()?
 		"Today"
 		:d.getTime()>today.getTime()-24*3600000?

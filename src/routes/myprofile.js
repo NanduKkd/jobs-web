@@ -15,10 +15,19 @@ export default function MyProfileRoute() {
 			alert(e.message+" Please try again.")
 		})
 	}
+	if(!profile) return null
 	return (
-		<>
-			<h2>My Profile</h2>
-			<button onClick={onLogoutClick} disabled={loading}>Logout</button>
-		</>
+		<div className="scroll-container">
+			<div className="card">
+				<h1>My Profile</h1>
+				Name: {profile.name}<br />
+				Email: {profile.email}<br />
+				Phone: {profile.phone}<br />
+				Role: {profile.role==="recruiter"?"Recruiter":"User"}<br />
+			</div>
+			<div className="card">
+				<button className="danger" onClick={onLogoutClick} disabled={loading}>Logout</button>
+			</div>
+		</div>
 	)
 }

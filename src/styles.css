@@ -99,6 +99,19 @@ body {
 	color: #000;
 	font-size: 1.3em;
 }
+.chats-alert {
+	background-color: #09e;
+	color: #fff;
+	width: 2em;
+	height: 2em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 1em;
+	font-size: 1em;
+	font-weight: bold;
+	margin-left: 5px;
+}
 .chat {
 	flex: 2.5;
 	min-width: 0;
@@ -131,6 +144,11 @@ body {
 	display: flex;
 	flex-direction: column-reverse;
 }
+.chat-date {
+	align-self: center;
+	font-size: 0.9em;
+	margin: 0.3em;
+}
 .msg-outer {
 	padding: 1em;
 	border-radius: 0.5em;
@@ -143,7 +161,7 @@ body {
 	background-color: #dcf8c6;
 	align-self: flex-end;
 	align-items: flex-end;
-	text-align: right;
+	text-align: left;
 }
 .msg-received {
 	background-color: #fffffe;
@@ -152,6 +170,7 @@ body {
 	align-items: flex-start;
 }
 .msg-text {
+	white-space: pre-line;
 }
 .msg-info {
 	color: #777;
@@ -193,6 +212,8 @@ body {
 	resize: none;
 }
 .chat-sendbutton {
+	color: #fff;
+	font-weight: bold;
 	height: 4.2em;
 	aspect-ratio: 1;
 	background-color: #000d;
@@ -319,4 +340,67 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+}
+
+.card {
+	background-color: white;
+	width: 60vw;
+	border-radius: 10px;
+	margin: 1.5em 0 0 0;
+	align-self: center;
+	padding: 2em;
+	box-shadow: 0 0 5px #0001;
+	line-height: 1.8em;
+}
+
+.card > .salary {
+	color: #777;
+	font-size: 1.1em;
+}
+.card > .description {
+	white-space: pre-line;
+	padding: 1em;
+	line-height: 1.6em;
+}
+.card button {
+	flex: 1;
+	border: solid 2px;
+	background-color: #fff;
+	color: #000;
+	text-align: center;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 0.8em 4em;
+	border-radius: 5px;
+}
+.card button:hover {
+	background-color: #f7f7f7;
+}
+.card button:active {
+	background-color: #eee;
+}
+.card-form {
+	display: flex;
+	flex-direction: column;
+}
+.card-form > label {
+	margin-bottom: 1em;
+}
+.card-form > textarea {
+	min-height: 26em;
+	font-family: sans-serif;
+	font-size: 1em;
+	line-height: 1.3em;
+	padding: 0.5em;
+}
+.card-form > button.cancel {
+	border-width: 1px;
+}
+.card-form > button {
+	margin-top: 0.5em;
+}
+
+button.danger {
+	border-color: red;
+	color: red;
 }

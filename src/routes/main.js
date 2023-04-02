@@ -14,7 +14,7 @@ export default function MainRoute() {
 				<div className="logo"></div>
 				<div className="spacer" />
 				{profile?.role==="recruiter"?<NavLink to="/job/add" className={a => `nav-item ${a.isActive?"active":"inactive"}`}>New Job +</NavLink>:null}
-				<NavLink to="/jobs" className={a => `nav-item ${a.isActive?"active":"inactive"}`}>Jobs</NavLink>
+				<NavLink to="/jobs" className={a => `nav-item ${a.isActive?"active":"inactive"}`}>{profile?.role==="recruiter"?"My ":""}Jobs</NavLink>
 				<NavLink to="/chat" className={a => `nav-item ${a.isActive?"active":"inactive"}`}>Chat</NavLink>
 				<NavLink to="/myprofile" className={a => `nav-item ${a.isActive?"active":"inactive".isActive?"active":"inactive"}`}>My Profile</NavLink>
 			</div>

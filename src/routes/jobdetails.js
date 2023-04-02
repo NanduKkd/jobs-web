@@ -13,7 +13,7 @@ export default function JobDetails() {
 	const [recruiter, setRecruiter] = useState('')
 
 	const [applying, setApplying] = useState(false)
-	const [letter, setLetter] = useState('Enter a request letter to apply for this job')
+	const [letter, setLetter] = useState('')
 	const [loading, setLoading] = useState(false)
 	
 	useEffect(() => {
@@ -38,6 +38,9 @@ export default function JobDetails() {
 			})
 		}
 	}, [params])
+	function onCancelClick() {
+		setApplying(false)
+	}
 	function onApplyClick() {
 		setApplying(true)
 	}
@@ -57,21 +60,61 @@ export default function JobDetails() {
 			setLoading(false)
 		})
 	}
+	function onEditClick() {
+		navigate("/job/edit/"+params?.jobid)
+	}
+	function onDeleteClick() {
+		if(window.confirm("Are you sure to delete this job? This action can't be reversed.")) {
+			setLoading(true)
+			axios.delete('/api/jobs/'+params?.jobid).then(res => {
+				if(res.status===204) {
+					navigate("/jobs")
+				} else {
+					const e = new Error("Something went wrong. Please try again.")
+					e.response = res;
+					throw e;
+				}
+			}).catch(e => {
+				console.error(e)
+				alert(e.message)
+			}).then(() => {
+				setLoading(false);
+			})
+		}
+	}
 	return (
-		<div>
-			<h2 className="title">{title}</h2>
-			<div className="salary">Salary {salary}</div>
-			<div className="description">{description}</div>
-			{profile.role==="user" && !applying?(
-				<button onClick={onApplyClick}>Apply for Job</button>
-			):null}
-			{applying?(
-				<>
-					<label>Request Letter</label>
-					<textarea onChange={e => setLetter(e.target.value)} value={letter}></textarea>
-					<button disabled={loading} onClick={sendRequest}>Send Request</button>
-				</>
-			):null}
+		<div className="scroll-container">
+			<div className="card">
+				<h1 className="title">{title}</h1>
+				<div className="salary">Salary: ₹{salary}</div>
+			</div>
+			<div className="card">
+				<div className="description">{description}</div>
+			</div>
+			<div className="card">
+				{profile.role==="user" && !applying?(
+					<div style={{display: 'flex'}}>
+						<button onClick={onApplyClick}>Apply for this Job</button>
+						<div style={{width: '10px'}} />
+						<button>Bookmark this job</button>
+					</div>
+				):(
+					<div style={{display: 'flex'}}>
+						<button onClick={onEditClick}>Edit job details</button>
+						<div style={{width: '10px'}} />
+						<button className="danger" onClick={onDeleteClick}>Delete this job</button>
+					</div>
+				)}
+				{applying?(
+					<div className="card-form">
+						<label>Request Letter</label>
+						<textarea onChange={e => setLetter(e.target.value)} value={letter} placeholder='Enter a request letter to apply for this job'></textarea>
+						<button disabled={loading} onClick={sendRequest}>Send Message to Recruiter</button>
+						<button className="cancel" disabled={loading} onClick={onCancelClick}>Cancel</button>
+					</div>
+				):null}
+			</div>
+			<div style={{height: '2em'}} />
 		</div>
 	)
 }
