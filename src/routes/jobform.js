@@ -6,7 +6,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 export default function AddJob() {
 	const [ title, setTitle ] = useState('')
 	const [ description, setDescription ] = useState('')
-	const [ salary, setSalary ] = useState('0')
+	const [ salaryFrom, setSalaryFrom ] = useState('0')
+	const [ salaryTo, setSalaryTo ] = useState('0')
 	const [ loading, setLoading ] = useState(false)
 	const [ error, setError ] = useState('')
 	const profile = useAuth()
@@ -21,7 +22,8 @@ export default function AddJob() {
 				if(res.status===200) {
 					setTitle(res.data.title)
 					setDescription(res.data.description)
-					setSalary(res.data.salary+'')
+					setSalaryFrom(res.data.salary.from+'')
+					setSalaryTo(res.data.salary.to+'')
 				} else {
 					const e = new Error("Something went wrong. Please try again.")
 					e.response = res;
@@ -42,16 +44,16 @@ export default function AddJob() {
 			return setError("Job title should be atleast 5 characters of length")
 		if(!description)
 			return setError("Job description should be atleast 20 characters of length")
-		if(!parseInt(salary)>0)
-			return setError("Enter a valid salary for the job")
+		if(!(parseInt(salaryFrom)>0) || !(parseInt(salaryTo)>0) || parseInt(salaryTo)<=parseInt(salaryFrom))
+			return setError("Enter valid salary values for the job")
 
 		setLoading(true)
 		setError("")
 		let promise;
 		if(params?.jobid) {
-			promise = axios.patch("/api/jobs/"+params.jobid, {title, description, salary})
+			promise = axios.patch("/api/jobs/"+params.jobid, {title, description, salary: {from: salaryFrom, to: salaryTo}})
 		} else {
-			promise = axios.post("/api/jobs", {title, description, salary, recruiter: profile._id})
+			promise = axios.post("/api/jobs", {title, description, salary: {from: salaryFrom, to: salaryTo}, recruiter: profile._id})
 		}
 		promise.then(res => {
 			if(res.status===204 && params?.jobid) {
@@ -80,7 +82,12 @@ export default function AddJob() {
 				<div className="field">
 					<label>Salary</label>
 					<div style={{display: 'flex'}}>
-						<span style={{fontSize: '1.1em', marginTop: '0.1em'}}>₹</span><input type="number" style={{flex: 1, marginLeft: '0.3em'}} onChange={e => setSalary(e.target.value)} value={salary} />
+						<span style={{fontSize: '0.9em', marginTop: '0.3em', marginRight: '1em'}}>From</span>
+						<span style={{fontSize: '1.1em', marginTop: '0.1em'}}>₹</span>
+						<input type="number" style={{flex: 1, marginLeft: '0.1em'}} onChange={e => setSalaryFrom(e.target.value)} value={salaryFrom} />
+						<span style={{fontSize: '0.9em', marginTop: '0.3em', marginRight: '1em', marginLeft: '1em'}}>To</span>
+						<span style={{fontSize: '1.1em', marginTop: '0.1em'}}>₹</span>
+						<input type="number" style={{flex: 1, marginLeft: '0.1em'}} onChange={e => setSalaryTo(e.target.value)} value={salaryTo} />
 					</div>
 				</div>
 				<div className="field">

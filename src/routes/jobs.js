@@ -30,7 +30,7 @@ export default function JobsRoute() {
 			):(list.map((i, ii) => (
 				<Link className="job-item-outer" to={"/job/"+i._id} key={ii+'_'}>
 					<div className="job-item-title">{i.title}</div>
-					<div className="job-item-salary">₹{i.salary}</div>
+					<div className="job-item-salary">₹{i.salary.from} - ₹{i.salary.to}</div>
 					<div className="job-item-description">{i.description}</div>
 				</Link>
 			)))}

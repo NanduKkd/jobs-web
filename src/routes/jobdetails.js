@@ -86,7 +86,7 @@ export default function JobDetails() {
 		<div className="scroll-container">
 			<div className="card">
 				<h1 className="title">{title}</h1>
-				<div className="salary">Salary: ₹{salary}</div>
+				<div className="salary">Salary: ₹{salary.from} - ₹{salary.to}</div>
 			</div>
 			<div className="card">
 				<div className="description">{description}</div>
