@@ -3,29 +3,29 @@ import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth } from '../utils/auth'
 
-export default function JobDetails() {
+export default function PostDetails() {
 	const profile = useAuth()
 	const params = useParams();
 	const navigate = useNavigate()
-	const [title, setTitle] = useState('Job title...')
-	const [description, setDescription] = useState('Job description...')
-	const [salary, setSalary] = useState(0)
-	const [recruiter, setRecruiter] = useState('')
+	const [title, setTitle] = useState('Post title...')
+	const [description, setDescription] = useState('Post description...')
+	const [owner, setOwner] = useState('')
+	const [ownerName, setOwnerName] = useState('')
 
-	const [applying, setApplying] = useState(false)
 	const [letter, setLetter] = useState('')
+	const [replying, setReplying] = useState(false)
 	const [loading, setLoading] = useState(false)
 	
 	useEffect(() => {
-		if(!params?.jobid) {
-			navigate("/jobs")
+		if(!params?.postid) {
+			navigate("/posts")
 		} else {
-			axios.get('/api/jobs/'+params.jobid).then(res => {
+			axios.get('/api/posts/'+params.postid).then(res => {
 				if(res.status===200) {
 					setTitle(res.data.title)
 					setDescription(res.data.description)
-					setSalary(res.data.salary)
-					setRecruiter(res.data.recruiter)
+					setOwner(res.data.owner._id)
+					setOwnerName(res.data.owner.name)
 				} else {
 					const e = new Error("Somethig went wrong. Please try again later.")
 					e.response = res;
@@ -34,21 +34,21 @@ export default function JobDetails() {
 			}).catch(e => {
 				console.error(e)
 				alert(e.message)
-				navigate("/jobs")
+				navigate("/posts")
 			})
 		}
 	}, [params])
 	function onCancelClick() {
-		setApplying(false)
+		setReplying(false)
 	}
-	function onApplyClick() {
-		setApplying(true)
+	function onReplyClick() {
+		setReplying(true)
 	}
 	function sendRequest() {
 		setLoading(true)
-		axios.post("/api/messages/", {to: recruiter, from: profile._id, text: letter}).then(res => {
+		axios.post("/api/messages/", {to: owner, from: profile._id, text: letter}).then(res => {
 			if(res.status===201) {
-				navigate("/chat/"+recruiter)
+				navigate("/chat/"+owner)
 			} else {
 				const e = new Error("Something went wrong. Please try again.")
 				e.response = res;
@@ -61,14 +61,14 @@ export default function JobDetails() {
 		})
 	}
 	function onEditClick() {
-		navigate("/job/edit/"+params?.jobid)
+		navigate("/post/edit/"+params?.postid)
 	}
 	function onDeleteClick() {
-		if(window.confirm("Are you sure to delete this job? This action can't be reversed.")) {
+		if(window.confirm("Are you sure to delete this post? This action can't be reversed.")) {
 			setLoading(true)
-			axios.delete('/api/jobs/'+params?.jobid).then(res => {
+			axios.delete('/api/posts/'+params?.postid).then(res => {
 				if(res.status===204) {
-					navigate("/jobs")
+					navigate("/posts")
 				} else {
 					const e = new Error("Something went wrong. Please try again.")
 					e.response = res;
@@ -85,32 +85,38 @@ export default function JobDetails() {
 	return (
 		<div className="scroll-container">
 			<div className="card">
+				<div className="post-owner">
+					<div className="post-owner-dp dp">
+						<img />
+					</div>
+					<div className="post-owner-data">
+						{ownerName?ownerName:owner}
+					</div>
+				</div>
+				<div style={{height: '1em'}} />
 				<h1 className="title">{title}</h1>
-				<div className="salary">Salary: ₹{salary.from} - ₹{salary.to}</div>
-			</div>
-			<div className="card">
 				<div className="description">{description}</div>
 			</div>
 			<div className="card">
-				{profile.role==="recruiter"?(
+				{profile._id===owner?(
 					<div style={{display: 'flex'}}>
-						<button onClick={onEditClick}>Edit job details</button>
+						<button onClick={onEditClick}>Edit post details</button>
 						<div style={{width: '10px'}} />
-						<button className="danger" onClick={onDeleteClick}>Delete this job</button>
+						<button className="danger" onClick={onDeleteClick}>Delete this post</button>
 					</div>
-				):!applying?(
+				):!replying?(
 					<div style={{display: 'flex'}}>
-						<button onClick={onApplyClick}>Apply for this Job</button>
+						<button onClick={onReplyClick}>Send a reply to this Post</button>
 						{/*
 						<div style={{width: '10px'}} />
-						<button>Bookmark this job</button>
+						<button>Bookmark this Post</button>
 						*/}
 					</div>
 				):(
 					<div className="card-form">
 						<label>Request Letter</label>
-						<textarea onChange={e => setLetter(e.target.value)} value={letter} placeholder='Enter a request letter to apply for this job'></textarea>
-						<button disabled={loading} onClick={sendRequest}>Send Message to Recruiter</button>
+						<textarea onChange={e => setLetter(e.target.value)} value={letter} placeholder='Enter a reply this post'></textarea>
+						<button disabled={loading} onClick={sendRequest}>Send Message to Post Owner</button>
 						<button className="cancel" disabled={loading} onClick={onCancelClick}>Cancel</button>
 					</div>
 				)}

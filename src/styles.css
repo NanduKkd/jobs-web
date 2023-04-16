@@ -72,7 +72,7 @@ body {
 	background-color: #f0f7ff;
 	pointer-events: none;
 }
-.chats-dp {
+.dp {
 	height: 3em;
 	width: 3em;
 	border-radius: 2em;
@@ -403,4 +403,48 @@ body {
 button.danger {
 	border-color: red;
 	color: red;
+}
+.post-item-outer {
+	color: black;
+	text-decoration: none;
+	width: 40vw;
+	margin: 0.5em 0;
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 5px 3px #ddd6;
+	align-self: center;
+}
+.post-item-title {
+	color: black;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+.post-item-salary {
+	color: #000a;
+	font-size: 0.9em;
+	margin-top: 0.6em;
+}
+.post-item-description {
+	color: #000;
+	font-size: 1em;
+	white-space: pre-line;
+	line-height: 1.2em;
+	margin-top: 0.9em;
+}
+.post-owner {
+	padding: 0.8em;
+	margin: 0 0.6em 0.6em;
+	border-bottom: solid 1px #ccc;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: black;
+	font-size: 1.3em;
+}
+.post-item-content {
+	padding: 1.5em;
+}
+.post-owner-data {
+	flex: 1;
+	min-width: 0;
 }

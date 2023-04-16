@@ -16,6 +16,9 @@ import ChatRoute from './routes/chat'
 import JobsRoute from './routes/jobs'
 import JobFormRoute from './routes/jobform'
 import JobDetailsRoute from './routes/jobdetails'
+import PostsRoute from './routes/posts'
+import PostFormRoute from './routes/postform'
+import PostDetailsRoute from './routes/postdetails'
 import MyProfileRoute from './routes/myprofile'
 import LoginRoute from './routes/login'
 import RegisterRoute from './routes/register'
@@ -48,6 +51,22 @@ const router = createBrowserRouter([
 		path: "/",
 		element: <AuthProvider><MainRoute /></AuthProvider>,
 		children: [
+			{
+				path: "posts",
+				element: <PostsRoute />,
+			},
+			{
+				path: "post/add",
+				element: <PostFormRoute />,
+			},
+			{
+				path: "post/:postid",
+				element: <PostDetailsRoute />,
+			},
+			{
+				path: "post/edit/:postid",
+				element: <PostFormRoute />,
+			},
 			{
 				path: "jobs",
 				element: <JobsRoute />,

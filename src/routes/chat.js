@@ -206,7 +206,7 @@ export default function ChatRouter() {
 			<div className="chats">
 				{data.chats?.map(i => (
 					<NavLink className={a => `chats-item ${a.isActive?"active":"inactive"}`} to={"/chat/"+i._id} key={i._id}>
-						<div className="chats-dp">
+						<div className="chats-dp dp">
 							<img src="" />
 						</div>
 						<div className="chats-content">
