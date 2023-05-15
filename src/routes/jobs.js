@@ -15,7 +15,6 @@ export default function JobsRoute() {
 		axios.get(profile.role==='recruiter'?'/api/jobs/recruiter/'+profile._id:'/api/jobs/').then(res => {
 			setError('')
 			setList(res.data)
-			console.log(res.data)
 		}).catch(e => {
 			setError(e.message)
 			console.error(e)

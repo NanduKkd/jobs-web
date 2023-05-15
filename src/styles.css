@@ -28,6 +28,7 @@ body {
 	color: #fff;
 	margin: 0 1em;
 	text-decoration: none;
+	cursor: pointer;
 }
 .nav-item:hover {
 	text-decoration: solid underline;
@@ -447,4 +448,73 @@ button.danger {
 .post-owner-data {
 	flex: 1;
 	min-width: 0;
+}
+
+.course-header {
+	margin-bottom: 2em;
+}
+
+.video-item-outer {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: black;
+	font-size: 1.2em;
+	margin: 0 0 0.5em 0;
+	padding: 0.5em;
+}
+.video-item-text:hover {
+	text-decoration: solid underline;
+}
+.video-item-play {
+	height: 1.5em;
+	width: 1.5em;
+}
+.video-item-duration {
+	color: #0007;
+	width: 3em;
+}
+
+.video-item-action {
+	height: 1.7em;
+	width: 1.7em;
+	display: flex;
+	margin: 0 0 0 0.5em;
+	align-items: center;
+	justify-content: center;
+}
+.video-item-action:hover {
+	background-color: #0001;
+}
+.video-item-action-icon {
+	height: 1.5em;
+	width: 1.5em;
+}
+
+.course-item-outer {
+	display: flex;
+	color: #000;
+	text-decoration: none;
+}
+.course-item-thumbnail {
+	height: 7em;
+	width: 7em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-size: 0.8em;
+	background-color: #00000022;
+	color: #0005;
+}
+.course-item-body {
+	display: flex;
+	flex-direction: column;
+	padding: 0 0 0 1em;
+}
+.course-item-outer:hover {
+	background-color: #faffffff;
+}
+.course-item-actions {
+	display: flex;
 }

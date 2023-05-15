@@ -19,6 +19,10 @@ import JobDetailsRoute from './routes/jobdetails'
 import PostsRoute from './routes/posts'
 import PostFormRoute from './routes/postform'
 import PostDetailsRoute from './routes/postdetails'
+import CoursesRoute from './routes/courses'
+import CourseDetailsRoute from './routes/coursedetails'
+import VideoFormRoute from './routes/videoform'
+import VideoRoute from './routes/video'
 import MyProfileRoute from './routes/myprofile'
 import LoginRoute from './routes/login'
 import RegisterRoute from './routes/register'
@@ -66,6 +70,22 @@ const router = createBrowserRouter([
 			{
 				path: "post/edit/:postid",
 				element: <PostFormRoute />,
+			},
+			{
+				path: "courses",
+				element: <CoursesRoute />,
+			},
+			{
+				path: "course/:courseid",
+				element: <CourseDetailsRoute />,
+			},
+			{
+				path: "course/:courseid/newvideo",
+				element: <VideoFormRoute />,
+			},
+			{
+				path: "course/:courseid/:videoid",
+				element: <VideoRoute />,
 			},
 			{
 				path: "jobs",

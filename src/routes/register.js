@@ -7,7 +7,7 @@ export default function RegisterRoute() {
 	const [ name, setName ] = useState('')
 	const [ phone, setPhone ] = useState('')
 	const [ email, setEmail ] = useState('')
-	const [ isRecruiter, setIsRecruiter ] = useState(false)
+	const [ role, setRole ] = useState('')
 	const [ username, setUsername ] = useState('')
 	const [ password, setPassword ] = useState('')
 	const [ confirm, setConfirm ] = useState('')
@@ -27,7 +27,7 @@ export default function RegisterRoute() {
 		if(password !== confirm)
 			return setError("Passwords does not match.")
 		setLoading(true)
-		register({role: isRecruiter?"recruiter":"user", name, phone, email, username, password}).then(e => {
+		register({role, name, phone, email, username, password}).then(e => {
 			if(e) {
 				console.error(e)
 				setLoading(false)
@@ -49,9 +49,16 @@ export default function RegisterRoute() {
 				<label>Email address</label>
 				<input type="email" value={email} onChange={e => setEmail(e.target.value)} />
 			</div>
-			<div className="field" style={{display: 'flex'}}>
-				<input style={{width: '1em', height: '1em', marginRight: '0.2em'}} type="checkbox" value={isRecruiter} onClick={e => setIsRecruiter(e.target.checked)} />
-				<label style={{marginTop: '0.1em'}}>Recruiter Role</label>
+			<div className="field">
+				<label>What are you?</label>
+				<div style={{display: 'flex', marginTop: '0.5em'}}>
+					<input style={{width: '1em', height: '1em', marginRight: '0.4em'}} type="radio" checked={role==='user'} onClick={e => setRole('user')} />
+					<label style={{marginTop: '0.1em'}}>User</label>
+					<input style={{width: '1em', height: '1em', marginRight: '0.4em', marginLeft: '1.5em'}} type="radio" checked={role==='recruiter'} onClick={e => setRole('recruiter')} />
+					<label style={{marginTop: '0.1em'}}>Recruiter</label>
+					<input style={{width: '1em', height: '1em', marginRight: '0.4em', marginLeft: '1.5em'}} type="radio" checked={role==='tutor'} onClick={e => setRole('tutor')} />
+					<label style={{marginTop: '0.1em'}}>Tutor</label>
+				</div>
 			</div>
 			<div className="field">
 				<label>Username</label>
